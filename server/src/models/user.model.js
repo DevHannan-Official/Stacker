@@ -1,4 +1,6 @@
-import { Schema, model, models } from "mongoose";
+import pkg from "mongoose";
+const { Schema, model, models } = pkg;
+import bcrypt from "bcryptjs";
 
 const userSchema = new Schema(
   {
@@ -18,6 +20,7 @@ const userSchema = new Schema(
       lowercase: true,
       trim: true,
     },
+    bio: String,
     displayName: { type: String, required: true, trim: true },
     avatar: { url: String, publicId: String },
     password: { type: String, required: true },
@@ -38,6 +41,12 @@ const userSchema = new Schema(
 );
 
 userSchema.index({ displayName: "text", email: "text" });
+
+userSchema.pre("save", async function (next) {
+  const salt = bcrypt.genSaltSync(10);
+  this.password = await bcrypt.hash(this.password, salt);
+  next();
+});
 
 const User = models.User || model("User", userSchema);
 export default User;
