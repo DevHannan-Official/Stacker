@@ -7,8 +7,8 @@ import { ErrorMiddleware } from "./middlewares/error.middleware.js";
 
 import authRoutes from "./routes/auth.route.js";
 import chatsRoutes from "./routes/chats.route.js";
-import messagesRoutes from "./routes/message.route.js";
-import notificationRoutes from "./routes/notification.route.js";
+import messagesRoutes from "./routes/messages.route.js";
+import notificationRoutes from "./routes/notifications.route.js";
 import profileRoutes from "./routes/profile.route.js";
 
 const app = express();
