@@ -1,16 +1,17 @@
 import type { Metadata, Viewport } from "next";
-import { Inter } from "next/font/google";
+import { Lato, Geist_Mono } from "next/font/google";
 import "@/styles/globals.css";
 
-const inter = Inter({
-  variable: "--font-inter",
+const inter = Lato({
+  variable: "--font-Lato",
+  weight: ["300", "400", "700", "900"],
   subsets: ["latin"],
 });
 
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
-  themeColor: "#59006c",
+  themeColor: "#611f69",
 };
 
 export const metadata: Metadata = {

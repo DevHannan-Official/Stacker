@@ -1,26 +1,69 @@
 @import "tailwindcss";
 
+/* Base light mode values */
 :root {
   --background: #ffffff;
   --foreground: #171717;
+
+  /* Slack brand colors */
+  --slack-purple: #611f69;
+  --slack-blue: #36c5f0;
+  --slack-green: #2eb67d;
+  --slack-red: #e01e5a;
+  --slack-yellow: #ecb22e;
+
+  /* Neutral surfaces */
+  --bg-primary: #ffffff;
+  --bg-secondary: #f8f8f8;
+  --text-primary: #1d1c1d;
+  --text-secondary: #616061;
+  --border-color: #e1e1e1;
+  --surface: #ffffff;
+  --surface-hover: #f4f4f4;
+  --surface-active: #e9e9e9;
 }
 
+/* Tailwind inline theme mapping */
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+
+  --color-slack-purple: var(--slack-purple);
+  --color-slack-blue: var(--slack-blue);
+  --color-slack-green: var(--slack-green);
+  --color-slack-red: var(--slack-red);
+  --color-slack-yellow: var(--slack-yellow);
+
+  --color-surface: var(--surface);
+  --color-surface-hover: var(--surface-hover);
+  --color-surface-active: var(--surface-active);
+  --color-border: var(--border-color);
+
+  /* Fonts */
+  --font-sans: var(--font-lato, "Helvetica Neue", Arial, sans-serif);
 }
 
+/* Dark mode overrides */
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --background: #1a1d21;
+    --foreground: #e8e8e8;
+
+    --bg-primary: #1a1d21;
+    --bg-secondary: #222529;
+    --text-primary: #e8e8e8;
+    --text-secondary: #b5b5b5;
+    --border-color: #2d2d2d;
+    --surface: #222529;
+    --surface-hover: #2d3035;
+    --surface-active: #383c42;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@layer base {
+  body {
+    background: var(--background);
+    color: var(--foreground);
+    font-family: var(--font-sans);
+  }
 }
