@@ -5,9 +5,11 @@ import processErrorHandlers from "./lib/process-errors.js";
 
 const PORT = ENV.PORT;
 
-app.listen(PORT, async () => {
-  console.log("✔ Stacker HTTP Server is running on port", PORT);
-  await dbConnect();
-});
+if (ENV.NODE_ENV === "development") {
+  app.listen(PORT, async () => {
+    console.log("✔ Stacker HTTP Server is running on port", PORT);
+  });
+}
+await dbConnect();
 
 processErrorHandlers();
