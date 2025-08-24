@@ -15,7 +15,11 @@ export const registerUser = asyncHandler(async (req, res, next) => {
   }
 
   const username =
-    name.split(" ").join("").toLowerCase() +
+    name
+      .split(" ")
+      .join("")
+      .toLowerCase()
+      .replace(/[^a-zA-Z0-9 ]/g, "") +
     "-" +
     Math.round(Math.random() * 1000000);
 
@@ -37,5 +41,38 @@ export const registerUser = asyncHandler(async (req, res, next) => {
       secure: ENV.NODE_ENV === "production",
       maxAge: 1000 * 60 * 60 * 24 * 30, // 30 days
     })
-    .json({ success: true, user, message: "User signed up successfully" });
+    .json({ success: true, user, message: "Signed Up successfully" });
+});
+
+export const loginUser = asyncHandler(async (req, res, next) => {
+  const { email, password, username } = req.body;
+
+  let user;
+
+  if (!email && username) {
+    user = await User.findOne({ username });
+  } else {
+    user = await User.findOne({ email });
+  }
+
+  if (!user) {
+    next(new ErrorHandler("Please Enter correct credentials", 404));
+    return;
+  }
+
+  if (!(await user.comparePassword(password))) {
+    next(new ErrorHandler("Please Enter correct credentials", 404));
+    return;
+  }
+
+  const token = issueAuthToken(user.id);
+  res
+    .status(200)
+    .cookie("authorization", token, {
+      httpOnly: true,
+      sameSite: "lax",
+      secure: ENV.NODE_ENV === "production",
+      maxAge: 1000 * 60 * 60 * 24 * 30, // 30 days
+    })
+    .json({ success: true, user, message: "Logged In successfully" });
 });
