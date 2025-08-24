@@ -25,6 +25,7 @@ const userSchema = new Schema(
     avatar: { url: String, publicId: String },
     password: { type: String, required: true },
     lastSeenAt: { type: Date },
+    verified: { type: Boolean, default: false },
   },
   {
     timestamps: true,

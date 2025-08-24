@@ -76,3 +76,7 @@ export const loginUser = asyncHandler(async (req, res, next) => {
     })
     .json({ success: true, user, message: "Logged In successfully" });
 });
+
+export const authorizeUser = asyncHandler(async (req, res, next) => {
+  res.status(200).json({ success: true, user: req.user });
+});
