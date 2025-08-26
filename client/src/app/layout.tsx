@@ -1,6 +1,10 @@
 import type { Metadata, Viewport } from "next";
-import { Lato, Geist_Mono } from "next/font/google";
+import { Lato } from "next/font/google";
 import "@/styles/globals.css";
+import { QueryClientProvider } from "@tanstack/react-query";
+import { queryClient } from "@/lib/useQuery";
+import { Toaster } from "react-hot-toast";
+import Providers from "@/providers";
 
 const inter = Lato({
   variable: "--font-Lato",
@@ -68,7 +72,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${inter.className} antialiased`}>{children}</body>
+      <body className={`${inter.className} antialiased`}>
+        <Providers>{children}</Providers>
+      </body>
     </html>
   );
 }

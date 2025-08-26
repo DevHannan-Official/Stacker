@@ -1,15 +1,22 @@
 "use client";
+
 import Button from "@/components/shared/button";
+import { signUpUser } from "@/lib/fetchApi";
 import { signupSchema } from "@/lib/schemas";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Image from "next/image";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import { useMutation } from "@tanstack/react-query";
+import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
 
 const SignUpPage = () => {
+  const router = useRouter();
   const {
     register,
+    reset,
     handleSubmit,
     formState: { errors },
   } = useForm<z.infer<typeof signupSchema>>({
@@ -22,10 +29,23 @@ const SignUpPage = () => {
     },
   });
 
+  const {
+    mutate: signUp,
+    isPending,
+    isError,
+    error,
+    isSuccess,
+  } = useMutation({
+    mutationFn: signUpUser,
+    onSuccess: () => {
+      reset();
+      toast.success("Signed up successfully");
+      router.replace("/web");
+    },
+  });
+
   function onSubmit(values: z.infer<typeof signupSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    console.log(values);
+    signUp(values);
   }
 
   return (
@@ -33,6 +53,7 @@ const SignUpPage = () => {
       <form
         className="flex flex-col gap-4 items-center w-full p-4 md:p-6 shadow max-w-lg bg-white"
         onSubmit={handleSubmit(onSubmit)}
+        autoComplete="off"
       >
         <Image
           src={"/images/logo.png"}
@@ -103,15 +124,15 @@ const SignUpPage = () => {
         </div>
         <div className="flex flex-col gap-2 w-full">
           <label
-            htmlFor="confirmPasword"
+            htmlFor="confirmPassword"
             className={errors.confirmPassword?.message ? "danger" : ""}
           >
-            Confirm Pasword
+            Confirm Password
           </label>
           <input
             type="password"
             placeholder="********"
-            id="confirmPasword"
+            id="confirmPassword"
             className={`input ${
               errors.confirmPassword?.message ? "danger" : ""
             }`}
@@ -121,8 +142,13 @@ const SignUpPage = () => {
             {errors.confirmPassword?.message}
           </p>
         </div>
-        <Button variant={"primary"} additionalClasses="w-full" type="submit">
-          Sign Up
+        <Button
+          variant={"primary"}
+          additionalClasses="w-full"
+          type="submit"
+          disabled={isPending}
+        >
+          {isPending ? "Signing Up..." : "Sign Up"}
         </Button>
 
         <div className="w-full my-1 relative max-w-md">

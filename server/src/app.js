@@ -10,13 +10,19 @@ import chatsRoutes from "./routes/chats.route.js";
 import messagesRoutes from "./routes/messages.route.js";
 import notificationRoutes from "./routes/notifications.route.js";
 import profileRoutes from "./routes/profile.route.js";
+import { ENV } from "./lib/env.js";
 
 const app = express();
 
 // Helper Functions
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true, limit: "5mb" }));
-app.use(cors());
+app.use(
+  cors({
+    origin: ENV.CLIENT_ORIGIN,
+    credentials: true,
+  })
+);
 app.use(cookieParser());
 app.use(helmet());
 

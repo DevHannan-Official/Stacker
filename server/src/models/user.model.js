@@ -24,7 +24,7 @@ const userSchema = new Schema(
     displayName: { type: String, required: true, trim: true },
     avatar: { url: String, publicId: String },
     password: { type: String, required: true },
-    lastSeenAt: { type: Date },
+    lastSeenAt: { type: Date, default: Date.now() },
     verified: { type: Boolean, default: false },
   },
   {

@@ -9,6 +9,7 @@ type propTypes = {
   href?: string;
   onClick?: () => void;
   additionalClasses?: string;
+  disabled?: boolean;
 };
 const Button = ({
   children,
@@ -18,6 +19,7 @@ const Button = ({
   href,
   onClick,
   additionalClasses,
+  disabled = false,
 }: propTypes) => {
   const classNames = `text-base font-semibold flex items-center gap-1.5 justify-center cursor-pointer mb-2 ${
     size === "icon" ? "p-2" : "py-2 px-4"
@@ -26,7 +28,7 @@ const Button = ({
       ? "bg-background border-2 focus:outline-2 focus:outline-dashed border-slack-red text-slack-red"
       : variant === "secondary"
       ? "bg-background border-2 focus:outline-2 focus:outline-dashed border-slack-purple text-slack-purple"
-      : "bg-slack-purple/90 text-white hover:bg-slack-purple border-2 focus:outline-2 focus:outline-dashed border-slack-purple"
+      : "bg-slack-purple/90 text-white hover:bg-slack-purple border-2 focus:outline-2 focus:outline-dashed border-slack-purple disabled:bg-gray-400 disabled:cursor-not-allowed disabled:border-gray-400 disabled:focus:outline-none"
   } ${additionalClasses}`;
 
   if (href) {
@@ -38,7 +40,12 @@ const Button = ({
   }
 
   return (
-    <button className={classNames} type={type} onClick={onClick}>
+    <button
+      className={classNames}
+      type={type}
+      onClick={onClick}
+      disabled={disabled}
+    >
       {children}
     </button>
   );

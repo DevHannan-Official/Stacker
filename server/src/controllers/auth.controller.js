@@ -7,6 +7,11 @@ import { ENV } from "../lib/env.js";
 export const registerUser = asyncHandler(async (req, res, next) => {
   const { name, email, password } = req.body;
 
+  if (!name || !email || !password) {
+    next(new ErrorHandler("Please enter all fields", 400));
+    return;
+  }
+
   // Find existing account
   const existingUser = await User.findOne({ email });
   if (existingUser) {
