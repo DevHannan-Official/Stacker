@@ -1,28 +1,26 @@
 "use client";
 import Button from "@/components/shared/button";
-import { signupSchema } from "@/lib/schemas";
+import { signinSchema } from "@/lib/schemas";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Image from "next/image";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
-const SignUpPage = () => {
+const SignInPage = () => {
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<z.infer<typeof signupSchema>>({
-    resolver: zodResolver(signupSchema),
+  } = useForm<z.infer<typeof signinSchema>>({
+    resolver: zodResolver(signinSchema),
     defaultValues: {
-      name: "",
-      email: "",
+      emailOrUsername: "",
       password: "",
-      confirmPassword: "",
     },
   });
 
-  function onSubmit(values: z.infer<typeof signupSchema>) {
+  function onSubmit(values: z.infer<typeof signinSchema>) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
     console.log(values);
@@ -42,45 +40,29 @@ const SignUpPage = () => {
           className="w-16 h-16 md:w-20 md:h-20"
         />
         <div className="text-center mb-5">
-          <h1 className="text-2xl sm:text-3xl font-bold">Get Started</h1>
+          <h1 className="text-2xl sm:text-3xl font-bold">Welcome Back</h1>
           <p className="text-sm text-text-secondary font-medium">
-            Create your account to start using Stacker
+            Login your account to continue using Stacker
           </p>
         </div>
         <div className="flex flex-col gap-2 w-full">
           <label
-            htmlFor="name"
-            className={errors.name?.message ? "danger" : ""}
+            htmlFor="emailOrUsername"
+            className={errors.emailOrUsername?.message ? "danger" : ""}
           >
-            Full Name
+            Email or Username
           </label>
           <input
             type="text"
-            placeholder="John Doe"
-            id="name"
-            className={`input ${errors.name?.message ? "danger" : ""}`}
-            {...register("name")}
-          />
-          <p className="text-red-500 my-1 text-xs font-medium">
-            {errors.name?.message}
-          </p>
-        </div>
-        <div className="flex flex-col gap-2 w-full">
-          <label
-            htmlFor="email"
-            className={errors.email?.message ? "danger" : ""}
-          >
-            Email
-          </label>
-          <input
-            type="email"
             placeholder="yourname@example.com"
-            id="email"
-            className={`input ${errors.email?.message ? "danger" : ""}`}
-            {...register("email")}
+            id="emailOrUsername"
+            className={`input ${
+              errors.emailOrUsername?.message ? "danger" : ""
+            }`}
+            {...register("emailOrUsername")}
           />
           <p className="text-red-500 my-1 text-xs font-medium">
-            {errors.email?.message}
+            {errors.emailOrUsername?.message}
           </p>
         </div>
         <div className="flex flex-col gap-2 w-full">
@@ -101,37 +83,19 @@ const SignUpPage = () => {
             {errors.password?.message}
           </p>
         </div>
-        <div className="flex flex-col gap-2 w-full">
-          <label
-            htmlFor="confirmPasword"
-            className={errors.confirmPassword?.message ? "danger" : ""}
-          >
-            Confirm Pasword
-          </label>
-          <input
-            type="password"
-            placeholder="********"
-            id="confirmPasword"
-            className={`input ${
-              errors.confirmPassword?.message ? "danger" : ""
-            }`}
-            {...register("confirmPassword")}
-          />
-          <p className="text-red-500 my-1 text-xs font-medium">
-            {errors.confirmPassword?.message}
-          </p>
-        </div>
         <Button variant={"primary"} additionalClasses="w-full" type="submit">
-          Sign Up
+          Sign In
         </Button>
 
         <div className="w-full my-1 relative max-w-md">
           <hr className="divider" />
         </div>
         <div className="flex items-center gap-1.5">
-          <p className="text-sm text-text-primary">Already have an account?</p>
-          <Link className="link" href="/sign-in">
-            Sign In
+          <p className="text-sm text-text-primary">
+            Don&apos;t have an account?
+          </p>
+          <Link className="link" href="/sign-up">
+            Sign Up
           </Link>
         </div>
         <p className="mt-2 text-xs text-text-secondary text-center max-w-md">
@@ -149,4 +113,4 @@ const SignUpPage = () => {
   );
 };
 
-export default SignUpPage;
+export default SignInPage;

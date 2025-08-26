@@ -1,7 +1,8 @@
+import SignInPage from "@/modules/sign-in";
 import React from "react";
 
 const SignIn = () => {
-  return <div>SignIn</div>;
+  return <SignInPage />;
 };
 
 export default SignIn;
