@@ -1,9 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Lato } from "next/font/google";
 import "@/styles/globals.css";
-import { QueryClientProvider } from "@tanstack/react-query";
-import { queryClient } from "@/lib/useQuery";
-import { Toaster } from "react-hot-toast";
 import Providers from "@/providers";
 
 const inter = Lato({

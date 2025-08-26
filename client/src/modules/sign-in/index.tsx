@@ -1,29 +1,67 @@
 "use client";
+
 import Button from "@/components/shared/button";
+import { signInUser } from "@/lib/fetchApi";
 import { signinSchema } from "@/lib/schemas";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useMutation } from "@tanstack/react-query";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
+import toast from "react-hot-toast";
 import { z } from "zod";
 
+import { useEffect, useState } from "react";
+
 const SignInPage = () => {
+  const [defaultEmailOrUsername, setDefaultEmailOrUsername] = useState("");
+  const router = useRouter();
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const searchParams = new URLSearchParams(window.location.search);
+      const value =
+        searchParams.get("email") || searchParams.get("username") || "";
+      setDefaultEmailOrUsername(value);
+    }
+  }, []);
+
   const {
     register,
     handleSubmit,
     formState: { errors },
+    reset,
   } = useForm<z.infer<typeof signinSchema>>({
     resolver: zodResolver(signinSchema),
     defaultValues: {
-      emailOrUsername: "",
+      emailOrUsername: defaultEmailOrUsername,
       password: "",
     },
   });
 
+  useEffect(() => {
+    // Update the field if the default changes (e.g. after hydration)
+    if (defaultEmailOrUsername) {
+      reset({ emailOrUsername: defaultEmailOrUsername, password: "" });
+    }
+  }, [defaultEmailOrUsername, reset]);
+
+  const { mutate: signIn, isPending } = useMutation({
+    mutationFn: signInUser,
+    onSuccess: () => {
+      reset();
+      toast.success("Signed in successfully");
+      router.replace("/web");
+    },
+    onError: (err: any) => {
+      toast.error(
+        err?.response.data.error || "An error occurred. Please try again."
+      );
+    },
+  });
+
   function onSubmit(values: z.infer<typeof signinSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    console.log(values);
+    signIn(values);
   }
 
   return (
@@ -83,8 +121,13 @@ const SignInPage = () => {
             {errors.password?.message}
           </p>
         </div>
-        <Button variant={"primary"} additionalClasses="w-full" type="submit">
-          Sign In
+        <Button
+          variant={"primary"}
+          additionalClasses="w-full"
+          type="submit"
+          disabled={isPending}
+        >
+          {isPending ? "Signing In..." : "Sign In"}
         </Button>
 
         <div className="w-full my-1 relative max-w-md">

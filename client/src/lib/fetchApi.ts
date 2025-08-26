@@ -1,5 +1,5 @@
 import z from "zod";
-import { signupSchema } from "./schemas";
+import { signinSchema, signupSchema } from "./schemas";
 import toast from "react-hot-toast";
 import { api } from "./axios";
 
@@ -15,10 +15,28 @@ export const signUpUser = async (data: z.infer<typeof signupSchema>) => {
     data: reqBody,
   });
 
-  if (res.status !== 201) {
-    toast.error("An Error Occured, Please Try Again");
-    throw new Error(res.data?.error);
+  return res;
+};
+
+export const signInUser = async (data: z.infer<typeof signinSchema>) => {
+  let reqBody;
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (emailRegex.test(data.emailOrUsername)) {
+    reqBody = {
+      email: data.emailOrUsername,
+      password: data.password,
+    };
+  } else {
+    reqBody = {
+      username: data.emailOrUsername,
+      password: data.password,
+    };
   }
 
-  return res.data;
+  const res = await api("/api/auth/login", {
+    method: "POST",
+    data: reqBody,
+  });
+
+  return res;
 };

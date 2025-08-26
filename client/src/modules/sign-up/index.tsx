@@ -29,18 +29,17 @@ const SignUpPage = () => {
     },
   });
 
-  const {
-    mutate: signUp,
-    isPending,
-    isError,
-    error,
-    isSuccess,
-  } = useMutation({
+  const { mutate: signUp, isPending } = useMutation({
     mutationFn: signUpUser,
     onSuccess: () => {
       reset();
       toast.success("Signed up successfully");
       router.replace("/web");
+    },
+    onError: (err: any) => {
+      toast.error(
+        err?.response.data.error || "An error occurred. Please try again."
+      );
     },
   });
 
