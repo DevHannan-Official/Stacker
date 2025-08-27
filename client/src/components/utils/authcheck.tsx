@@ -14,7 +14,6 @@ const AuthCheck = ({ children }: { children: React.ReactNode }) => {
   const { mutate: authorizeUser, isPending } = useMutation({
     mutationFn: checkAuth,
     onSuccess: (res) => {
-      console.log(res);
       setUser(res.data.user);
       router.replace("/web");
     },

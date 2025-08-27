@@ -34,7 +34,6 @@ const SignUpPage = () => {
   const { mutate: signUp, isPending } = useMutation({
     mutationFn: signUpUser,
     onSuccess: (res) => {
-      console.log(res);
       setUser(res.data.user);
       reset();
       toast.success("Signed up successfully");
