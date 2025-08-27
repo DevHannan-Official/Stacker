@@ -10,10 +10,12 @@ export function SessionProvider({ children }: { children: React.ReactNode }) {
   // Redirect logic must happen inside a Client Component.
   // Use a useEffect to ensure it only runs in the browser.
   useEffect(() => {
-    if (user !== null && user) {
+    if (user !== null && user !== undefined) {
+      console.log("Logged In");
       return redirect("/web");
     }
-    return redirect("/");
+    console.log("Logged Out");
+    // return redirect("/");
   }, [user]);
 
   return <>{children}</>;

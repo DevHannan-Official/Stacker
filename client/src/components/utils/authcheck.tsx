@@ -26,9 +26,9 @@ const AuthCheck = ({ children }: { children: React.ReactNode }) => {
   // Use an empty dependency array to run only on initial mount.
   useEffect(() => {
     authorizeUser();
-  }, []); // <-- This is the key change
+  }, []);
 
-  if (isPending || user === null) {
+  if (isPending) {
     return (
       <div className="w-full h-svh flex items-center justify-center">
         <Loader className="animate-spin text-slack-purple" size={40} />

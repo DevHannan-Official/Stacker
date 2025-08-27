@@ -1,6 +1,5 @@
 import z from "zod";
 import { signinSchema, signupSchema } from "./schemas";
-import toast from "react-hot-toast";
 import { api } from "./axios";
 
 export const signUpUser = async (data: z.infer<typeof signupSchema>) => {
@@ -43,6 +42,14 @@ export const signInUser = async (data: z.infer<typeof signinSchema>) => {
 
 export const checkAuth = async () => {
   const res = await api("/api/auth/authorize", {
+    method: "GET",
+  });
+
+  return res;
+};
+
+export const sendVerificationMail = async () => {
+  const res = await api("/api/auth/verify", {
     method: "GET",
   });
 
