@@ -13,8 +13,10 @@ import toast from "react-hot-toast";
 import { z } from "zod";
 
 import { useEffect, useState } from "react";
+import { useAuthStore } from "@/stores/useAuthStore";
 
 const SignInPage = () => {
+  const { setUser } = useAuthStore();
   const [defaultEmailOrUsername, setDefaultEmailOrUsername] = useState("");
   const router = useRouter();
   useEffect(() => {
@@ -48,7 +50,9 @@ const SignInPage = () => {
 
   const { mutate: signIn, isPending } = useMutation({
     mutationFn: signInUser,
-    onSuccess: () => {
+    onSuccess: (res) => {
+      console.log(res);
+      setUser(res.data.user);
       reset();
       toast.success("Signed in successfully");
       router.replace("/web");

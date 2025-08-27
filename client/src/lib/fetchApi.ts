@@ -40,3 +40,11 @@ export const signInUser = async (data: z.infer<typeof signinSchema>) => {
 
   return res;
 };
+
+export const checkAuth = async () => {
+  const res = await api("/api/auth/authorize", {
+    method: "GET",
+  });
+
+  return res;
+};

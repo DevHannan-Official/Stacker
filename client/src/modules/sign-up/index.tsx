@@ -11,8 +11,10 @@ import { z } from "zod";
 import { useMutation } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
+import { useAuthStore } from "@/stores/useAuthStore";
 
 const SignUpPage = () => {
+  const { setUser } = useAuthStore();
   const router = useRouter();
   const {
     register,
@@ -31,7 +33,9 @@ const SignUpPage = () => {
 
   const { mutate: signUp, isPending } = useMutation({
     mutationFn: signUpUser,
-    onSuccess: () => {
+    onSuccess: (res) => {
+      console.log(res);
+      setUser(res.data.user);
       reset();
       toast.success("Signed up successfully");
       router.replace("/web");
