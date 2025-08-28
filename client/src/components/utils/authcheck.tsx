@@ -26,14 +26,15 @@ const AuthCheck = ({ children }: { children: React.ReactNode }) => {
     },
     onError: () => {
       logout();
-      router.replace("/sign-in");
+      router.replace("/");
+      setFetching(false);
     },
   });
 
   // Use an empty dependency array to run only on initial mount.
   useEffect(() => {
     authorizeUser();
-  }, []);
+  }, [authorizeUser]);
 
   if (isPending || isFetching) {
     return (

@@ -64,3 +64,11 @@ export const verifyUser = async (data: { code: string }) => {
 
   return res;
 };
+
+export const oAuthGoogle = async () => {
+  const res = await api("/api/auth/google", {
+    method: "GET",
+  });
+
+  return res;
+};

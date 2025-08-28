@@ -73,7 +73,11 @@ const StartPage = () => {
           <hr className="divider" />
         </div>
         <div className="px-4 pt-6 pb-4 w-full flex flex-col gap-3 max-w-lg">
-          <Button variant="secondary" additionalClasses="w-full">
+          <Button
+            variant="secondary"
+            additionalClasses="w-full"
+            href={process.env.NEXT_PUBLIC_API_URL + "/api/auth/google"}
+          >
             <Image
               src={"/vectors/google.svg"}
               alt="google"

@@ -85,3 +85,20 @@ export const loginUser = asyncHandler(async (req, res, next) => {
 export const authorizeUser = asyncHandler(async (req, res, next) => {
   res.status(200).json({ success: true, user: req.user });
 });
+
+export const googleAuthCallback = (req, res) => {
+  if (!req.user) {
+    return res.redirect(ENV.CLIENT_ORIGIN + "/sign-in");
+  }
+
+  const token = issueAuthToken(req.user.id);
+
+  res
+    .cookie("authorization", token, {
+      httpOnly: true,
+      sameSite: "lax",
+      secure: ENV.NODE_ENV === "production",
+      maxAge: 1000 * 60 * 60 * 24 * 30, // 30 days
+    })
+    .redirect(ENV.CLIENT_ORIGIN + "/web");
+};
