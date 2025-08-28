@@ -9,16 +9,19 @@ import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
 const AuthCheck = ({ children }: { children: React.ReactNode }) => {
-  const { setUser, logout, user } = useAuthStore();
+  const { setUser, logout, setFetching, isFetching } = useAuthStore();
   const router = useRouter();
   const { mutate: authorizeUser, isPending } = useMutation({
     mutationFn: checkAuth,
+    onMutate: () => setFetching(true),
     onSuccess: (res) => {
       setUser(res.data.user);
       if (res.data.user.verified) {
         router.replace("/web");
+        setFetching(false);
       } else {
         router.replace("/verify");
+        setFetching(false);
       }
     },
     onError: () => {
@@ -32,7 +35,7 @@ const AuthCheck = ({ children }: { children: React.ReactNode }) => {
     authorizeUser();
   }, []);
 
-  if (isPending) {
+  if (isPending || isFetching) {
     return (
       <div className="w-full h-svh flex items-center justify-center">
         <Loader className="animate-spin text-slack-purple" size={40} />

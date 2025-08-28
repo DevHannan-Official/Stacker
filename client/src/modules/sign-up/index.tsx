@@ -37,7 +37,7 @@ const SignUpPage = () => {
       setUser(res.data.user);
       reset();
       toast.success("Signed up successfully");
-      router.replace("/web");
+      router.replace("/verify");
     },
     onError: (err: any) => {
       toast.error(

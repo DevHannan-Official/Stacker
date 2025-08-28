@@ -5,18 +5,18 @@ import { redirect } from "next/navigation";
 import React, { useEffect } from "react";
 
 export function SessionProvider({ children }: { children: React.ReactNode }) {
-  const { user } = useAuthStore();
+  const { user, isFetching } = useAuthStore();
 
   // Redirect logic must happen inside a Client Component.
   // Use a useEffect to ensure it only runs in the browser.
   useEffect(() => {
-    if (user !== null && user !== undefined) {
+    if (!isFetching && user !== null && user !== undefined) {
       console.log("Logged In");
       return redirect("/web");
     }
     console.log("Logged Out");
     // return redirect("/");
-  }, [user]);
+  }, [user, isFetching]);
 
   return <>{children}</>;
 }

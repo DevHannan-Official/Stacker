@@ -55,3 +55,12 @@ export const sendVerificationMail = async () => {
 
   return res;
 };
+
+export const verifyUser = async (data: { code: string }) => {
+  const res = await api("/api/profile/verify", {
+    method: "PATCH",
+    data,
+  });
+
+  return res;
+};

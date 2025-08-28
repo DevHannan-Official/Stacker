@@ -1,7 +1,7 @@
 "use client";
 
 import Button from "@/components/shared/button";
-import { sendVerificationMail } from "@/lib/fetchApi";
+import { sendVerificationMail, verifyUser } from "@/lib/fetchApi";
 import { useMutation } from "@tanstack/react-query";
 import Image from "next/image";
 import Link from "next/link";
@@ -15,7 +15,7 @@ import z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 const SendVerificationPage = () => {
-  const { user } = useAuthStore();
+  const { user, setUser, isFetching } = useAuthStore();
   const router = useRouter();
 
   const [resendTimer, setResendTimer] = useState(0); // State for the timer
@@ -48,10 +48,28 @@ const SendVerificationPage = () => {
     },
   });
 
+  const { mutate: verifyTheUser, isPending: isVerifyingUser } = useMutation({
+    mutationFn: verifyUser,
+    onSuccess: (res) => {
+      setUser(res.data.user);
+      if (res.data.user.verified) {
+        router.replace("/web");
+      } else {
+        router.replace("/verify");
+      }
+    },
+    onError: (err: any) => {
+      toast.error(
+        err?.response.data.error || "An error occurred. Please try again."
+      );
+    },
+  });
+
   // Initial call to send verification mail on component mount
   useEffect(() => {
+    if (isFetching || !user || user.verified) return;
     sendVerification();
-  }, [sendVerification]);
+  }, [sendVerification, isFetching, user]);
 
   // Timer logic
   useEffect(() => {
@@ -73,7 +91,8 @@ const SendVerificationPage = () => {
   };
 
   function onSubmit(values: z.infer<typeof otpSchema>) {
-    // Implement your OTP verification logic here
+    if (isFetching || !user || user.verified) return;
+    verifyTheUser(values);
   }
 
   return (
@@ -104,7 +123,7 @@ const SendVerificationPage = () => {
               variant={"secondary"}
               size={"icon"}
               onClick={handleResendClick}
-              disabled={isMailSending || !canResend}
+              disabled={isMailSending || !canResend || isVerifyingUser}
             >
               {isMailSending
                 ? "Sending..."
@@ -123,8 +142,6 @@ const SendVerificationPage = () => {
             type="number"
             placeholder="******"
             id="otp"
-            min={6}
-            max={6}
             className={`input ${errors.code?.message ? "danger" : ""} `}
             {...register("code")}
           />
@@ -133,8 +150,13 @@ const SendVerificationPage = () => {
           </p>
         </div>
 
-        <Button variant={"primary"} additionalClasses="w-full" type="submit">
-          Verify
+        <Button
+          variant={"primary"}
+          additionalClasses="w-full"
+          type="submit"
+          disabled={isMailSending || isVerifyingUser}
+        >
+          {isVerifyingUser ? "Verifying..." : "Verify"}
         </Button>
 
         <div className="w-full my-1 relative max-w-md">
