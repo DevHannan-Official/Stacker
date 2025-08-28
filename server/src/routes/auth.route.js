@@ -1,6 +1,7 @@
 import { Router } from "express";
 import {
   authorizeUser,
+  githubAuthCallback,
   googleAuthCallback,
   loginUser,
   registerUser,
@@ -28,11 +29,27 @@ router.get(
 router.get(
   "/google/callback",
   passport.authenticate("google", {
-    failureRedirect:
-      ENV.CLIENT_ORIGIN + "/sign-in?error=Failed to Sign In with Google",
+    failureRedirect: ENV.CLIENT_ORIGIN + "?error=Failed to Sign In with Google",
     session: false, // Using JWTs instead of sessions
   }),
   googleAuthCallback
+);
+
+router.get(
+  "/github",
+  passport.authenticate("github", {
+    scope: ["user:email"],
+    session: false,
+  })
+);
+
+router.get(
+  "/github/callback",
+  passport.authenticate("github", {
+    failureRedirect: `${ENV.CLIENT_ORIGIN}?error=Failed to Sign In with GitHub`,
+    session: false,
+  }),
+  githubAuthCallback
 );
 
 export default router;

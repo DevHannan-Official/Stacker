@@ -88,7 +88,9 @@ export const authorizeUser = asyncHandler(async (req, res, next) => {
 
 export const googleAuthCallback = (req, res) => {
   if (!req.user) {
-    return res.redirect(ENV.CLIENT_ORIGIN + "/sign-in");
+    return res.redirect(
+      `${ENV.CLIENT_ORIGIN}?error=Cannot login with Google, please try again`
+    );
   }
 
   const token = issueAuthToken(req.user.id);
@@ -101,4 +103,22 @@ export const googleAuthCallback = (req, res) => {
       maxAge: 1000 * 60 * 60 * 24 * 30, // 30 days
     })
     .redirect(ENV.CLIENT_ORIGIN + "/web");
+};
+
+export const githubAuthCallback = (req, res) => {
+  if (!req.user) {
+    return res.redirect(
+      `${ENV.CLIENT_ORIGIN}?error=Cannot login with GitHub, please try again`
+    );
+  }
+
+  const token = issueAuthToken(req.user.id);
+  res
+    .cookie("authorization", token, {
+      httpOnly: true,
+      sameSite: "lax",
+      secure: ENV.NODE_ENV === "production",
+      maxAge: 1000 * 60 * 60 * 24 * 30, // 30 days
+    })
+    .redirect(`${ENV.CLIENT_ORIGIN}/web`);
 };

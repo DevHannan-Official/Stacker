@@ -86,7 +86,11 @@ const StartPage = () => {
             />
             <span className="hidden sm:block">Google</span>
           </Button>
-          <Button variant="secondary" additionalClasses="w-full">
+          <Button
+            variant="secondary"
+            additionalClasses="w-full"
+            href={process.env.NEXT_PUBLIC_API_URL + "/api/auth/github"}
+          >
             <Image
               src={"/vectors/github.svg"}
               alt="google"
