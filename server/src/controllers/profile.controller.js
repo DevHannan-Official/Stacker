@@ -1,18 +1,23 @@
+import { ENV } from "../lib/env.js";
 import { sendVerifyEmail } from "../lib/mails.js";
 import mailer from "../lib/nodemailer.js";
-import crypto from "crypto";
+import Otp from "../models/otp.model.js";
 
-export const sendVerifyEmail = async (req, res, next) => {
+export const sendVerifyMail = async (req, res, next) => {
   const user = req.user;
-  user.verifyToken = crypto.randomBytes(32).toString("hex");
+  const otp = Math.round(Math.random() * 1000000);
+  await Otp.deleteMany({ userId: user._id });
+
+  await Otp.create({ code: otp, userId: user._id });
 
   await mailer.sendMail({
     to: user.email,
     subject: "Verify Your Account - Stacker",
     text: "Verify Your Account - Stacker",
-    html: getVerifyEmailTemplate({
-      name: user.name,
-      url: `${process.env.CLIENT_URL}/verify?token=${user.verifyToken}`,
+    html: sendVerifyEmail({
+      appName: ENV.APP_NAME,
+      name: user.displayName,
+      otp,
     }),
   });
 

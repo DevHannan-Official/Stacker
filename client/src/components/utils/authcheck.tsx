@@ -15,7 +15,11 @@ const AuthCheck = ({ children }: { children: React.ReactNode }) => {
     mutationFn: checkAuth,
     onSuccess: (res) => {
       setUser(res.data.user);
-      router.replace("/web");
+      if (res.data.user.verified) {
+        router.replace("/web");
+      } else {
+        router.replace("/verify");
+      }
     },
     onError: () => {
       logout();

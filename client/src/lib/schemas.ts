@@ -41,3 +41,11 @@ export const signinSchema = z.object({
     .min(1, { message: "Email or Username is required" }),
   password: z.string().min(1, { message: "Password is required" }),
 });
+
+export const otpSchema = z.object({
+  code: z
+    .string()
+    .min(1, { message: "OTP is required" })
+    .min(6, { message: "Please enter a valid 6 digit OTP" })
+    .max(6, { message: "Please enter a valid 6 digit OTP" }),
+});

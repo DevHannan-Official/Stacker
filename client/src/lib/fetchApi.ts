@@ -49,7 +49,7 @@ export const checkAuth = async () => {
 };
 
 export const sendVerificationMail = async () => {
-  const res = await api("/api/auth/verify", {
+  const res = await api("/api/profile/verify", {
     method: "GET",
   });
 

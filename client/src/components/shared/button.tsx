@@ -27,7 +27,7 @@ const Button = ({
     variant === "danger"
       ? "bg-background border-2 focus:outline-2 focus:outline-dashed border-slack-red text-slack-red"
       : variant === "secondary"
-      ? "bg-background border-2 focus:outline-2 focus:outline-dashed border-slack-purple text-slack-purple"
+      ? "bg-transparent border-2 focus:outline-2 focus:outline-dashed border-slack-purple text-slack-purple hover:border-slack-purple/90 hover:text-slack-purple/90 disabled:cursor-not-allowed disabled:border-gray-400 disabled:focus:outline-none disabled:text-gray-400"
       : "bg-slack-purple/90 text-white hover:bg-slack-purple border-2 focus:outline-2 focus:outline-dashed border-slack-purple disabled:bg-gray-400 disabled:cursor-not-allowed disabled:border-gray-400 disabled:focus:outline-none"
   } ${additionalClasses}`;
 
