@@ -1,0 +1,108 @@
+import z from "zod";
+import { resetPasswordSchema, signinSchema, signupSchema } from "./schemas";
+import { api } from "./axios";
+
+export const signUpUser = async (data: z.infer<typeof signupSchema>) => {
+  const reqBody = {
+    name: data.name,
+    email: data.email,
+    password: data.password,
+  };
+
+  const res = await api("/api/auth/register", {
+    method: "POST",
+    data: reqBody,
+  });
+
+  return res;
+};
+
+export const signInUser = async (data: z.infer<typeof signinSchema>) => {
+  let reqBody;
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (emailRegex.test(data.emailOrUsername)) {
+    reqBody = {
+      email: data.emailOrUsername,
+      password: data.password,
+    };
+  } else {
+    reqBody = {
+      username: data.emailOrUsername,
+      password: data.password,
+    };
+  }
+
+  const res = await api("/api/auth/login", {
+    method: "POST",
+    data: reqBody,
+  });
+
+  return res;
+};
+
+export const checkAuth = async () => {
+  const res = await api("/api/auth/authorize", {
+    method: "GET",
+  });
+
+  return res;
+};
+
+export const sendVerificationMail = async () => {
+  const res = await api("/api/profile/verify", {
+    method: "GET",
+  });
+
+  return res;
+};
+
+export const verifyUser = async (data: { code: string }) => {
+  const res = await api("/api/profile/verify", {
+    method: "PATCH",
+    data,
+  });
+
+  return res;
+};
+
+export const forgetPassword = async (data: {
+  email?: string;
+  username?: string;
+}) => {
+  const res = await api("/api/auth/forget-password", {
+    method: "POST",
+    data,
+  });
+
+  return res;
+};
+
+export const checkResetPasswordLink = async (token: string) => {
+  const res = await api(`/api/auth/check/${token}`, {
+    method: "GET",
+  });
+
+  return res;
+};
+
+export const resetPassword = async (data: {
+  token: string;
+  password: string;
+}) => {
+  const res = await api(`/api/auth/reset-password/${data.token}`, {
+    method: "PATCH",
+    data: {
+      password: data.password,
+    },
+  });
+
+  return res;
+};
+
+export const logoutUser = async () => {
+  const res = await api("/api/auth/logout", {
+    method: "GET",
+  });
+
+  return res;
+};

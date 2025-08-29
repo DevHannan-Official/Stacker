@@ -1,16 +1,18 @@
 import type { Metadata, Viewport } from "next";
-import { Inter } from "next/font/google";
+import { Lato } from "next/font/google";
 import "@/styles/globals.css";
+import Providers from "@/providers";
 
-const inter = Inter({
-  variable: "--font-inter",
+const inter = Lato({
+  variable: "--font-Lato",
+  weight: ["300", "400", "700", "900"],
   subsets: ["latin"],
 });
 
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
-  themeColor: "#59006c",
+  themeColor: "#611f69",
 };
 
 export const metadata: Metadata = {
@@ -67,7 +69,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${inter.className} antialiased`}>{children}</body>
+      <body className={`${inter.className} antialiased`}>
+        <Providers>{children}</Providers>
+      </body>
     </html>
   );
 }

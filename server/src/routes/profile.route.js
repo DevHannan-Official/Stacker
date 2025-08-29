@@ -1,9 +1,14 @@
 import { Router } from "express";
+import authMiddleware from "../middlewares/auth.middleware.js";
+import {
+  sendVerifyMail,
+  verifyUser,
+} from "../controllers/profile.controller.js";
 
 const router = Router();
 
-router.get("/", (req, res) => {
-  res.status(200).json({ success: true, message: "Profile Route" });
-});
+router.get("/verify", authMiddleware, sendVerifyMail);
+
+router.patch("/verify", authMiddleware, verifyUser);
 
 export default router;

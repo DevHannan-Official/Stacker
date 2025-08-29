@@ -3,6 +3,9 @@ import cors from "cors";
 import helmet from "helmet";
 import bodyParser from "body-parser";
 import cookieParser from "cookie-parser";
+import passport from "passport";
+import session from "express-session";
+
 import { ErrorMiddleware } from "./middlewares/error.middleware.js";
 
 import authRoutes from "./routes/auth.route.js";
@@ -10,15 +13,37 @@ import chatsRoutes from "./routes/chats.route.js";
 import messagesRoutes from "./routes/messages.route.js";
 import notificationRoutes from "./routes/notifications.route.js";
 import profileRoutes from "./routes/profile.route.js";
+import { ENV } from "./lib/env.js";
+import "./lib/passport.js";
 
 const app = express();
 
 // Helper Functions
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true, limit: "5mb" }));
-app.use(cors());
+app.use(
+  cors({
+    origin: ENV.CLIENT_ORIGIN,
+    credentials: true,
+  })
+);
 app.use(cookieParser());
 app.use(helmet());
+app.use(
+  session({
+    secret: ENV.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+      httpOnly: true,
+      sameSite: "none",
+      secure: ENV.NODE_ENV === "production",
+      maxAge: 30 * 24 * 60 * 60 * 1000, // 7d
+    },
+  })
+);
+app.use(passport.initialize());
+app.use(passport.session());
 
 // Routes
 app.get("/", (req, res) => {
