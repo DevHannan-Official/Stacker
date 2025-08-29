@@ -1,4 +1,4 @@
-import { SessionProvider } from "@/components/utils/sessionprovider";
+import { ProtectAuthRoute } from "@/components/utils/protected-routes";
 import React from "react";
 
 export default function AuthLayout({
@@ -6,5 +6,5 @@ export default function AuthLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return <SessionProvider>{children}</SessionProvider>;
+  return <ProtectAuthRoute>{children}</ProtectAuthRoute>;
 }

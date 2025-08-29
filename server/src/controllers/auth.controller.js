@@ -58,9 +58,9 @@ export const loginUser = asyncHandler(async (req, res, next) => {
   let user;
 
   if (!email && username) {
-    user = await User.findOne({ username });
+    user = await User.findOne({ username, isOAuth: { status: false } });
   } else {
-    user = await User.findOne({ email });
+    user = await User.findOne({ email, isOAuth: { status: false } });
   }
 
   if (!user) {

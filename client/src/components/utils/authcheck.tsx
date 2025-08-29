@@ -7,17 +7,17 @@ import { useMutation } from "@tanstack/react-query";
 import { Loader } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
+import Loading from "../shared/loading";
 
 const AuthCheck = ({ children }: { children: React.ReactNode }) => {
   const { setUser, logout, setFetching, isFetching } = useAuthStore();
   const router = useRouter();
   const { mutate: authorizeUser, isPending } = useMutation({
     mutationFn: checkAuth,
-    onMutate: () => setFetching(true),
+    // onMutate: () => setFetching(true),
     onSuccess: (res) => {
       setUser(res.data.user);
       if (res.data.user.verified) {
-        router.replace("/web");
         setFetching(false);
       } else {
         router.replace("/verify");
@@ -26,22 +26,16 @@ const AuthCheck = ({ children }: { children: React.ReactNode }) => {
     },
     onError: () => {
       logout();
-      router.replace("/");
       setFetching(false);
     },
   });
 
-  // Use an empty dependency array to run only on initial mount.
   useEffect(() => {
     authorizeUser();
   }, [authorizeUser]);
 
   if (isPending || isFetching) {
-    return (
-      <div className="w-full h-svh flex items-center justify-center">
-        <Loader className="animate-spin text-slack-purple" size={40} />
-      </div>
-    );
+    return <Loading />;
   }
 
   return <>{children}</>;

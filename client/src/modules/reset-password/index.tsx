@@ -2,7 +2,6 @@
 import Button from "@/components/shared/button";
 import { checkResetPasswordLink, resetPassword } from "@/lib/fetchApi";
 import { resetPasswordSchema } from "@/lib/schemas";
-import { useAuthStore } from "@/stores/useAuthStore";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 import Image from "next/image";
@@ -21,7 +20,6 @@ const ResetPasswordPage = () => {
   const searchParams = useSearchParams();
   const token = searchParams.get("token");
   const [isCorrectLink, setIsCorrectLink] = useState(false);
-  const { setUser } = useAuthStore();
   const router = useRouter();
 
   const {
@@ -39,8 +37,7 @@ const ResetPasswordPage = () => {
 
   const { mutate: resetPasswordFunc, isPending } = useMutation({
     mutationFn: resetPassword,
-    onSuccess: (res) => {
-      setUser(res.data.user);
+    onSuccess: () => {
       reset();
       toast.success("Password reset successfully");
       router.replace("/sign-in");
