@@ -6,6 +6,7 @@ import {
   githubAuthCallback,
   googleAuthCallback,
   loginUser,
+  logoutUser,
   registerUser,
   resetPassword,
 } from "../controllers/auth.controller.js";
@@ -22,6 +23,7 @@ router.get("/authorize", authMiddleware, authorizeUser);
 router.post("/forget-password", forgetPassword);
 router.get("/check/:token", checkToken);
 router.patch("/reset-password/:token", resetPassword);
+router.get("/logout", authMiddleware, logoutUser);
 
 // Google OAuth initiation route
 router.get(

@@ -3,6 +3,10 @@ interface User {
   username: string;
   email: string;
   displayName: string;
-  avatar: string;
+  avatar: {
+    url: string;
+    publicId: string;
+    oAuthAvatar: string;
+  };
   verified: boolean;
 }

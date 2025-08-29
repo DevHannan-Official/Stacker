@@ -221,3 +221,14 @@ export const githubAuthCallback = (req, res) => {
     })
     .redirect(`${ENV.CLIENT_ORIGIN}/web`);
 };
+
+export const logoutUser = asyncHandler(async (req, res, next) => {
+  res
+    .clearCookie("authorization", {
+      httpOnly: true,
+      sameSite: "lax",
+      secure: ENV.NODE_ENV === "production",
+    })
+    .status(200)
+    .json({ success: true, message: "Logged out successfully" });
+});
