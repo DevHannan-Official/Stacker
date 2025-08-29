@@ -52,11 +52,7 @@ const SendVerificationPage = () => {
     mutationFn: verifyUser,
     onSuccess: (res) => {
       setUser(res.data.user);
-      if (res.data.user.verified) {
-        router.replace("/web");
-      } else {
-        router.replace("/verify");
-      }
+      router.replace("/web");
     },
     onError: (err: any) => {
       toast.error(

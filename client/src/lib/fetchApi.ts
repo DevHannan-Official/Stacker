@@ -65,7 +65,10 @@ export const verifyUser = async (data: { code: string }) => {
   return res;
 };
 
-export const forgetPassword = async (data: { email: string }) => {
+export const forgetPassword = async (data: {
+  email?: string;
+  username?: string;
+}) => {
   const res = await api("/api/auth/forget-password", {
     method: "POST",
     data,

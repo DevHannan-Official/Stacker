@@ -49,3 +49,10 @@ export const otpSchema = z.object({
     .min(6, { message: "Please enter a valid 6 digit OTP" })
     .max(6, { message: "Please enter a valid 6 digit OTP" }),
 });
+
+export const forgetPasswordSchema = z.object({
+  email: z
+    .string()
+    .min(1, { message: "Email is required" })
+    .email({ message: "Please enter a valid email" }),
+});

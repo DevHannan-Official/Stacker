@@ -10,7 +10,7 @@ export default function Providers({ children }: { children: React.ReactNode }) {
       <AuthCheck>{children}</AuthCheck>
       <Toaster
         toastOptions={{
-          duration: 800,
+          duration: 1000,
         }}
       />
     </QueryClientProvider>

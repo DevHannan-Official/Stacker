@@ -36,6 +36,7 @@ const userSchema = new Schema(
     password: { type: String, default: null },
     lastSeenAt: { type: Date, default: Date.now() },
     verified: { type: Boolean, default: false },
+    blocked: { type: Boolean, default: false },
   },
   {
     timestamps: true,

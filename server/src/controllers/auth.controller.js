@@ -4,6 +4,7 @@ import ErrorHandler from "../lib/error-handler.js";
 import { issueAuthToken, issueVerifyToken } from "../lib/token.js";
 import { ENV } from "../lib/env.js";
 import { sendResetPasswordMail } from "../lib/mails.js";
+import mailer from "../lib/nodemailer.js";
 
 export const registerUser = asyncHandler(async (req, res, next) => {
   const { name, email, password } = req.body;
@@ -102,6 +103,15 @@ export const forgetPassword = asyncHandler(async (req, res, next) => {
   }
   if (!user) {
     next(new ErrorHandler("User not found", 404));
+    return;
+  } else if (!user.verified) {
+    next(new ErrorHandler("Please verify your account first", 400));
+    return;
+  } else if (user.blocked) {
+    next(new ErrorHandler("Your account is blocked", 400));
+    return;
+  } else if (user.isOAuth.status) {
+    next(new ErrorHandler("Cannot reset password for this account", 400));
     return;
   }
 

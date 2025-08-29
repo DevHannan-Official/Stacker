@@ -47,13 +47,13 @@ const StartPage = () => {
             </p>
           </div>
           <div className="flex flex-col gap-2 w-full">
-            <label htmlFor="email" className={error ? "danger" : ""}>
+            <label htmlFor="emailOrUsername" className={error ? "danger" : ""}>
               Email or Username
             </label>
             <input
               type="text"
               placeholder="yourname@example.com"
-              id="email"
+              id="emailOrUsername"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               className={error ? "input danger" : "input"}
@@ -62,6 +62,9 @@ const StartPage = () => {
               <p className="text-red-500 font-medium text-sm">{error}</p>
             )}
           </div>
+          <Link className="link self-end" href="/forget-password">
+            Forget Password?
+          </Link>
           <Button variant={"primary"} additionalClasses="w-full" type="submit">
             Continue
           </Button>
@@ -105,7 +108,7 @@ const StartPage = () => {
         </div>
         <div className="flex items-center gap-1.5">
           <p className="text-sm text-text-primary">
-            Don&apos;t have an account?
+            Don&apos;t have an account actually?
           </p>
           <Link className="link" href="/sign-up">
             Sign Up
