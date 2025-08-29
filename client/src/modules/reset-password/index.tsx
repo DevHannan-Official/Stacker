@@ -91,7 +91,7 @@ const ResetPasswordPage = () => {
         <div className="text-center mb-5">
           <h1 className="text-2xl sm:text-3xl font-bold">Reset Password</h1>
           <p className="text-sm text-text-secondary font-medium">
-            Enter the new strong password to reset your password
+            Enter your email to receive a reset link
           </p>
         </div>
         <div className="flex flex-col gap-2 w-full">

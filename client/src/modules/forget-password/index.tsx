@@ -55,7 +55,7 @@ const ForgetPasswordPage = () => {
           className="w-16 h-16 md:w-20 md:h-20"
         />
         <div className="text-center mb-5">
-          <h1 className="text-2xl sm:text-3xl font-bold">Forget Password?</h1>
+          <h1 className="text-2xl sm:text-3xl font-bold">Forgot Password?</h1>
           <p className="text-sm text-text-secondary font-medium">
             Enter the correct email to reset your password
           </p>

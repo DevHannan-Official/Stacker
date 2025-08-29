@@ -37,7 +37,12 @@ passport.use(
           });
           await user.save();
         } else {
-          if (!user.isOAuth.status || user.isOAuth.name !== "Google") {
+          if (!user.isOAuth.status) {
+            return done(null, false, {
+              message:
+                "Account exists as a local user. Please sign in with email/password.",
+            });
+          } else if (user.isOAuth.name !== "Google") {
             return done(
               new Error(
                 `User already exists. Cannot login with Google. Go back to ${ENV.CLIENT_ORIGIN}`
@@ -92,7 +97,12 @@ passport.use(
           });
           await user.save();
         } else {
-          if (!user.isOAuth.status || user.isOAuth.name !== "GitHub") {
+          if (!user.isOAuth.status) {
+            return done(null, false, {
+              message:
+                "Account exists as a local user. Please sign in with email/password.",
+            });
+          } else if (user.isOAuth.name !== "GitHub") {
             return done(
               new Error(
                 `User already exists. Cannot login with GitHub. Go back to ${ENV.CLIENT_ORIGIN}`

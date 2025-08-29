@@ -45,9 +45,8 @@ export const signinSchema = z.object({
 export const otpSchema = z.object({
   code: z
     .string()
-    .min(1, { message: "OTP is required" })
-    .min(6, { message: "Please enter a valid 6 digit OTP" })
-    .max(6, { message: "Please enter a valid 6 digit OTP" }),
+    .trim()
+    .regex(/^\d{6}$/, { message: "Please enter a valid 6 digit OTP" }),
 });
 
 export const forgetPasswordSchema = z.object({

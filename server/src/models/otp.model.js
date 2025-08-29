@@ -5,7 +5,10 @@ const otpSchema = new Schema(
   {
     code: { type: String, required: true },
     userId: { type: Schema.Types.ObjectId, ref: "User", required: true },
-    expiredAt: { type: Date, default: Date.now() + 30 * 60 * 60 * 1000 },
+    expiredAt: {
+      type: Date,
+      default: () => new Date(Date.now() + 30 * 60 * 60 * 1000),
+    },
   },
   { timestamps: true }
 );

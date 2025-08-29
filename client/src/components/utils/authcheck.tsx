@@ -4,7 +4,6 @@
 import { checkAuth } from "@/lib/fetchApi";
 import { useAuthStore } from "@/stores/useAuthStore";
 import { useMutation } from "@tanstack/react-query";
-import { Loader } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import Loading from "../shared/loading";
@@ -14,13 +13,15 @@ const AuthCheck = ({ children }: { children: React.ReactNode }) => {
   const router = useRouter();
   const { mutate: authorizeUser, isPending } = useMutation({
     mutationFn: checkAuth,
-    // onMutate: () => setFetching(true),
+    onMutate: () => setFetching(true),
     onSuccess: (res) => {
       setUser(res.data.user);
       if (res.data.user.verified) {
         setFetching(false);
       } else {
-        router.replace("/verify");
+        if (window.location.pathname !== "/verify") {
+          router.replace("/verify");
+        }
         setFetching(false);
       }
     },

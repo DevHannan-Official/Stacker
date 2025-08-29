@@ -31,6 +31,7 @@ router.get(
   passport.authenticate("google", {
     scope: ["profile", "email"],
     session: false,
+    state: true,
   })
 );
 
@@ -39,6 +40,7 @@ router.get(
   passport.authenticate("google", {
     failureRedirect: ENV.CLIENT_ORIGIN + "?error=Failed to Sign In with Google",
     session: false, // Using JWTs instead of sessions
+    state: true,
   }),
   googleAuthCallback
 );
@@ -49,6 +51,7 @@ router.get(
   passport.authenticate("github", {
     scope: ["user:email"],
     session: false,
+    state: true,
   })
 );
 
@@ -57,6 +60,7 @@ router.get(
   passport.authenticate("github", {
     failureRedirect: `${ENV.CLIENT_ORIGIN}?error=Failed to Sign In with GitHub`,
     session: false,
+    state: true,
   }),
   githubAuthCallback
 );

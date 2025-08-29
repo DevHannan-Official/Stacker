@@ -18,7 +18,7 @@ const channelSchema = new Schema(
     name: { type: String, trim: true },
     topic: String,
     createdById: { type: Schema.Types.ObjectId, ref: "User", required: true },
-    memberIds: [{ type: Schema.Types.ObjectId, ref: "User", index: true }],
+    memberIds: [{ type: Schema.Types.ObjectId, ref: "User" }],
     archivedAt: Date,
   },
   { timestamps: true, versionKey: false }

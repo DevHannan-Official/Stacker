@@ -33,7 +33,15 @@ const Button = ({
 
   if (href) {
     return (
-      <Link href={href} className={classNames}>
+      <Link
+        href={href}
+        className={`${classNames} ${
+          disabled ? "pointer-events-none opacity-50 cursor-not-allowed" : ""
+        }`}
+        aria-disabled={disabled || undefined}
+        tabIndex={disabled ? -1 : undefined}
+        onClick={disabled ? (e) => e.preventDefault() : onClick}
+      >
         {children}
       </Link>
     );

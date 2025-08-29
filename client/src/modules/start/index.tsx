@@ -63,7 +63,7 @@ const StartPage = () => {
             )}
           </div>
           <Link className="link self-end" href="/forget-password">
-            Forget Password?
+            Forgot Password?
           </Link>
           <Button variant={"primary"} additionalClasses="w-full" type="submit">
             Continue

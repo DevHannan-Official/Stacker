@@ -33,8 +33,16 @@ const userSchema = new Schema(
     bio: String,
     displayName: { type: String, required: true, trim: true },
     avatar: { url: String, publicId: String, oAuthAvatar: String },
-    password: { type: String, default: null },
-    lastSeenAt: { type: Date, default: Date.now() },
+    password: {
+      type: String,
+      default: null,
+      select: false,
+      required: function () {
+        // Require password when not OAuth
+        return !(this.isOAuth?.status === true);
+      },
+    },
+    lastSeenAt: { type: Date, default: Date.now },
     verified: { type: Boolean, default: false },
     blocked: { type: Boolean, default: false },
   },

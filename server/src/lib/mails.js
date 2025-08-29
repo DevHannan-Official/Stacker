@@ -61,7 +61,7 @@ export const sendResetPasswordMail = ({ appName, name, url, time_limit }) => {
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Verify Your Account</title>
+    <title>Reset Your Password</title>
   </head>
   <body
     style="font-family: Arial, Helvetica, sans-serif; margin: 0; padding: 0"

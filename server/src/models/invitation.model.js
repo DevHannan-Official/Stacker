@@ -3,14 +3,14 @@ const { Schema, model, models } = pkg;
 
 const invitationSchema = new Schema(
   {
-    email: { type: String, required: true },
+    email: { type: String, required: true, trim: true, lowercase: true },
     organization: {
-      type: mongoose.Schema.Types.ObjectId,
+      type: Schema.Types.ObjectId,
       ref: "Organization",
       required: true,
     },
     invitedBy: {
-      type: mongoose.Schema.Types.ObjectId,
+      type: Schema.Types.ObjectId,
       ref: "User",
       required: true,
     },
@@ -22,6 +22,8 @@ const invitationSchema = new Schema(
   },
   { timestamps: true }
 );
+
+invitationSchema.index({ email: 1, organization: 1 }, { unique: true });
 
 const Invitation = models.Invitation || model("Invitation", invitationSchema);
 
