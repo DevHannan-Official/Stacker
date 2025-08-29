@@ -20,6 +20,7 @@ export const sendVerifyMail = asyncHandler(async (req, res, next) => {
       appName: ENV.APP_NAME,
       name: user.displayName,
       otp,
+      time_limit: "30",
     }),
   });
 

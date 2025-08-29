@@ -1,8 +1,9 @@
 import { asyncHandler } from "../middlewares/error.middleware.js";
 import User from "../models/user.model.js";
 import ErrorHandler from "../lib/error-handler.js";
-import { issueAuthToken } from "../lib/token.js";
+import { issueAuthToken, issueVerifyToken } from "../lib/token.js";
 import { ENV } from "../lib/env.js";
+import { sendResetPasswordMail } from "../lib/mails.js";
 
 export const registerUser = asyncHandler(async (req, res, next) => {
   const { name, email, password } = req.body;
@@ -84,6 +85,42 @@ export const loginUser = asyncHandler(async (req, res, next) => {
 
 export const authorizeUser = asyncHandler(async (req, res, next) => {
   res.status(200).json({ success: true, user: req.user });
+});
+
+export const forgetPassword = asyncHandler(async (req, res, next) => {
+  const { email, username } = req.body;
+
+  let user;
+
+  if (!email && !username) {
+    next(new ErrorHandler("Email or Username is required", 400));
+    return;
+  } else if (!email && username) {
+    user = await User.findOne({ username });
+  } else {
+    user = await User.findOne({ email });
+  }
+  if (!user) {
+    next(new ErrorHandler("User not found", 404));
+    return;
+  }
+
+  const resetToken = issueVerifyToken(user.id);
+  await mailer.sendMail({
+    to: user.email,
+    subject: "Reset Your Password - Stacker",
+    text: "Reset Your Password - Stacker",
+    html: sendResetPasswordMail({
+      appName: ENV.APP_NAME,
+      name: user.displayName,
+      url: `${ENV.CLIENT_ORIGIN}/reset-password?token=${resetToken}`,
+      time_limit: "30",
+    }),
+  });
+
+  res
+    .status(200)
+    .json({ success: true, message: "A mail sent successfully to your inbox" });
 });
 
 export const googleAuthCallback = (req, res) => {

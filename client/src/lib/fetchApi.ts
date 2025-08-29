@@ -65,9 +65,10 @@ export const verifyUser = async (data: { code: string }) => {
   return res;
 };
 
-export const oAuthGoogle = async () => {
-  const res = await api("/api/auth/google", {
-    method: "GET",
+export const forgetPassword = async (data: { email: string }) => {
+  const res = await api("/api/auth/forget-password", {
+    method: "POST",
+    data,
   });
 
   return res;

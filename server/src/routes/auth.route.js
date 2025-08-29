@@ -1,6 +1,7 @@
 import { Router } from "express";
 import {
   authorizeUser,
+  forgetPassword,
   githubAuthCallback,
   googleAuthCallback,
   loginUser,
@@ -16,6 +17,7 @@ const router = Router();
 router.post("/register", registerUser);
 router.post("/login", loginUser);
 router.get("/authorize", authMiddleware, authorizeUser);
+router.post("/forget-password", forgetPassword);
 
 // Google OAuth initiation route
 router.get(
@@ -35,6 +37,7 @@ router.get(
   googleAuthCallback
 );
 
+// Github OAuth initiation route
 router.get(
   "/github",
   passport.authenticate("github", {
