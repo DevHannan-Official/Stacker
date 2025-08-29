@@ -1,5 +1,5 @@
 import z from "zod";
-import { signinSchema, signupSchema } from "./schemas";
+import { resetPasswordSchema, signinSchema, signupSchema } from "./schemas";
 import { api } from "./axios";
 
 export const signUpUser = async (data: z.infer<typeof signupSchema>) => {
@@ -72,6 +72,28 @@ export const forgetPassword = async (data: {
   const res = await api("/api/auth/forget-password", {
     method: "POST",
     data,
+  });
+
+  return res;
+};
+
+export const checkResetPasswordLink = async (token: string) => {
+  const res = await api(`/api/auth/check/${token}`, {
+    method: "GET",
+  });
+
+  return res;
+};
+
+export const resetPassword = async (data: {
+  token: string;
+  password: string;
+}) => {
+  const res = await api(`/api/auth/reset-password/${data.token}`, {
+    method: "PATCH",
+    data: {
+      password: data.password,
+    },
   });
 
   return res;

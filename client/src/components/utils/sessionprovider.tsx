@@ -11,11 +11,8 @@ export function SessionProvider({ children }: { children: React.ReactNode }) {
   // Use a useEffect to ensure it only runs in the browser.
   useEffect(() => {
     if (!isFetching && user !== null && user !== undefined) {
-      console.log("Logged In");
       return redirect("/web");
     }
-    console.log("Logged Out");
-    // return redirect("/");
   }, [user, isFetching]);
 
   return <>{children}</>;

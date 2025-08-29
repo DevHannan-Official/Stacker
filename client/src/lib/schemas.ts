@@ -56,3 +56,30 @@ export const forgetPasswordSchema = z.object({
     .min(1, { message: "Email is required" })
     .email({ message: "Please enter a valid email" }),
 });
+
+export const resetPasswordSchema = z
+  .object({
+    newPassword: z
+      .string()
+      .min(1, { message: "New Password is required" })
+      .min(8, { message: "Password must be at least 8 characters" })
+      .regex(/^(?=.*[a-z])(?=.*[A-Z])/, {
+        message:
+          "Password must contain at least one lowercase and one uppercase letter",
+      })
+      // regex for one number
+      .regex(/(?=.*\d)/, {
+        message: "Password must contain at least one number",
+      })
+      // regex for one special character
+      .regex(/(?=.*[!@#$%^&*])/, {
+        message: "Password must contain at least one special character",
+      }),
+    confirmPassword: z
+      .string()
+      .min(1, { message: "Confirm Password is required" }),
+  })
+  .refine((data) => data.newPassword === data.confirmPassword, {
+    message: "Passwords do not match",
+    path: ["confirmPassword"],
+  });

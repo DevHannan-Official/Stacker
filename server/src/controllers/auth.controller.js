@@ -5,6 +5,7 @@ import { issueAuthToken, issueVerifyToken } from "../lib/token.js";
 import { ENV } from "../lib/env.js";
 import { sendResetPasswordMail } from "../lib/mails.js";
 import mailer from "../lib/nodemailer.js";
+import jwt from "jsonwebtoken";
 
 export const registerUser = asyncHandler(async (req, res, next) => {
   const { name, email, password } = req.body;
@@ -131,6 +132,57 @@ export const forgetPassword = asyncHandler(async (req, res, next) => {
   res
     .status(200)
     .json({ success: true, message: "A mail sent successfully to your inbox" });
+});
+
+export const checkToken = asyncHandler(async (req, res, next) => {
+  const { token } = req.params;
+  if (!token) {
+    next(new ErrorHandler("Invalid or Expired Link", 400));
+    return;
+  }
+
+  try {
+    const decoded = jwt.verify(token, ENV.JWT_SECRET);
+
+    const user = await User.findById(decoded.id);
+    if (!user) {
+      next(new ErrorHandler("Invalid or Expired Link", 400));
+      return;
+    }
+
+    res.status(200).json({ success: true });
+  } catch (error) {
+    next(new ErrorHandler("Invalid or Expired Link", 400));
+    return;
+  }
+});
+
+export const resetPassword = asyncHandler(async (req, res, next) => {
+  const { token } = req.params;
+  const { password } = req.body;
+
+  if (!token) {
+    next(new ErrorHandler("Invalid or Expired Link", 400));
+    return;
+  }
+
+  try {
+    const decoded = jwt.verify(token, ENV.JWT_SECRET);
+
+    const user = await User.findById(decoded.id);
+    if (!user) {
+      next(new ErrorHandler("Invalid or Expired Link", 400));
+      return;
+    }
+
+    user.password = password;
+    await user.save();
+
+    res.status(200).json({ success: true, message: "Password changed" });
+  } catch (error) {
+    next(new ErrorHandler("Invalid or Expired Link", 400));
+    return;
+  }
 });
 
 export const googleAuthCallback = (req, res) => {

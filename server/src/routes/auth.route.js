@@ -1,11 +1,13 @@
 import { Router } from "express";
 import {
   authorizeUser,
+  checkToken,
   forgetPassword,
   githubAuthCallback,
   googleAuthCallback,
   loginUser,
   registerUser,
+  resetPassword,
 } from "../controllers/auth.controller.js";
 import authMiddleware from "../middlewares/auth.middleware.js";
 import { ENV } from "../lib/env.js";
@@ -18,6 +20,8 @@ router.post("/register", registerUser);
 router.post("/login", loginUser);
 router.get("/authorize", authMiddleware, authorizeUser);
 router.post("/forget-password", forgetPassword);
+router.get("/check/:token", checkToken);
+router.patch("/reset-password/:token", resetPassword);
 
 // Google OAuth initiation route
 router.get(

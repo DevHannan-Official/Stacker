@@ -62,7 +62,10 @@ const StartPage = () => {
               <p className="text-red-500 font-medium text-sm">{error}</p>
             )}
           </div>
-          <Link className="link self-end" href="/forget-password">
+          <Link
+            className="link self-end"
+            href="/reset-password?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4YjEwOWU4MjRjNzZhNGI4NmY4YWIyYSIsImlhdCI6MTc1NjQ2OTM0MywiZXhwIjoxNzU2NDcxMTQzfQ.rQfDKcH0sNhEW5i8qImJbqisxA4p5a-RyfwNRmAiuyM"
+          >
             Forget Password?
           </Link>
           <Button variant={"primary"} additionalClasses="w-full" type="submit">
